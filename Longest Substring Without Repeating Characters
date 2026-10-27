@@ -1,0 +1,18 @@
+def lengthOfLongestSubstring(s: str) -> int:
+    char_map = {}  # Tracks the most recent index of each character
+    max_length = 0
+    left = 0       # Left boundary of the sliding window
+    
+    for right, char in enumerate(s):
+        # If the character is repeated and sits inside our active window
+        if char in char_map and char_map[char] >= left:
+            # Shrink the window by jumping the left pointer past the old duplicate
+            left = char_map[char] + 1
+            
+        # Record/update the position of the current character
+        char_map[char] = right
+        
+        # Calculate current window size and check if it's the largest seen
+        max_length = max(max_length, right - left + 1)
+        
+    return max_length

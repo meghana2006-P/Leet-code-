@@ -1,0 +1,29 @@
+def numIslands(grid: list[list[str]]) -> int:
+    if not grid:
+        return 0
+        
+    rows, cols = len(grid), len(grid[0])
+    island_count = 0
+    
+    def dfs(r, c):
+        # Base case: boundary check or checking if cell is water/visited
+        if r < 0 or c < 0 or r >= rows or c >= cols or grid[r][c] == '0':
+            return
+            
+        # Mark the current land cell as visited by turning it into water
+        grid[r][c] = '0'
+        
+        # Recursively visit all 4 adjacent directions
+        dfs(r + 1, c)  # Down
+        dfs(r - 1, c)  # Up
+        dfs(r, c + 1)  # Right
+        dfs(r, c - 1)  # Left
+
+    for r in range(rows):
+        for c in range(cols):
+            # When we find unvisited land, it triggers a new island discovery
+            if grid[r][c] == '1':
+                island_count += 1
+                dfs(r, c)  # Sink the entire connected island
+                
+    return island_count

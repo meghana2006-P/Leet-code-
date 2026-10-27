@@ -1,0 +1,16 @@
+def coinChange(coins: list[int], amount: int) -> int:
+    # Initialize DP array filled with an impossible maximum value (amount + 1)
+    dp = [amount + 1] * (amount + 1)
+    
+    # Base case: 0 coins needed to make an amount of 0
+    dp[0] = 0
+    
+    # Compute minimum coins for every value from 1 to amount
+    for i in range(1, amount + 1):
+        for coin in coins:
+            if i - coin >= 0:
+                # Minimum between current state or adding 1 coin to a previous state
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+                
+    # If dp[amount] wasn't updated, it means the amount is unreachable
+    return dp[amount] if dp[amount] != amount + 1 else -1
